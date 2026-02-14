@@ -1,0 +1,21 @@
+# Build directory
+build/
+
+# Object files
+*.o
+
+# Executables
+server
+client
+
+# Linux temp files
+*.out
+*.log
+
+# VSCode
+.vscode/
+
+# CMake (future)
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
