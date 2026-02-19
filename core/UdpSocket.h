@@ -2,7 +2,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include "../common/Types.h"
+#include "../common/Endpoint.h"
 
 class UdpSocket {
 public:
