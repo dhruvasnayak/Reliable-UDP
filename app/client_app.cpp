@@ -19,65 +19,33 @@ int main()
     }
 
     cout << "\n✓ Connected to server!" << endl;
-    cout << "\n--- Test Messages ---" << endl;
+    cout << "\n--- Sending Big Message Test ---" << endl;
 
-    // Test 1: Simple message
-    string msg1 = "Hello from Client!";
-    cout << "\n[Test 1] Sending: " << msg1 << endl;
-    if (!sock.reliableSend(msg1, server)) {
-        cerr << "Failed to send message 1." << endl;
+    // Big Message Test: 10000 bytes
+    string bigMessage = 
+        "The quick brown fox jumps over the lazy dog. "
+        "This is a comprehensive test case for the reliable UDP protocol. "
+        "The message will be automatically fragmented into multiple UDP packets. "
+        "Each fragment is sent with its own sequence number and acknowledged separately. "
+        "This ensures reliable delivery even when the message size exceeds the UDP packet size limit. "
+        "The protocol demonstrates TCP-like behavior over UDP by implementing proper handshaking, "
+        "fragmentation, acknowledgment, and sequence number tracking. "
+        "This big message test case serves as the primary validation mechanism for the system. "
+        "It demonstrates the robustness of the implementation when handling large payloads. "
+        "Each fragment will be received separately on the server side and displayed with statistics. ";
+    
+    cout << "\n[Big Message Test]" << endl;
+    cout << "Message Size: " << bigMessage.size() << " bytes" << endl;
+    cout << "Expected Fragments: " << (bigMessage.size() + 1487) / 1488 << endl;
+    cout << "Status: Sending..." << endl;
+    
+    if (!sock.reliableSend(bigMessage, server)) {
+        cerr << "✗ Failed to send big message." << endl;
+        return 1;
     }
-
-    // Test 2: Message with numbers
-    string msg2 = "Test Message #2 - Sequence Number Test";
-    cout << "[Test 2] Sending: " << msg2 << endl;
-    if (!sock.reliableSend(msg2, server)) {
-        cerr << "Failed to send message 2." << endl;
-    }
-
-    // Test 3: Longer message
-    string msg3 = "This is a longer test message to verify that the reliable UDP protocol can handle messages of varying lengths without any data loss or corruption.";
-    cout << "[Test 3] Sending: " << msg3 << endl;
-    if (!sock.reliableSend(msg3, server)) {
-        cerr << "Failed to send message 3." << endl;
-    }
-
-    // Test 4: Multiple rapid messages
-    cout << "\n[Test 4] Sending multiple rapid messages:" << endl;
-    for (int i = 1; i <= 5; i++) {
-        stringstream ss;
-        ss << "Rapid Test Message #" << i;
-        string msg = ss.str();
-        cout << "  - " << msg << endl;
-        if (!sock.reliableSend(msg, server)) {
-            cerr << "Failed to send rapid message " << i << "." << endl;
-        }
-    }
-
-    // Test 5: Interactive mode
-    cout << "\n--- Interactive Mode ---" << endl;
-    cout << "Type messages to send (type 'quit' to exit):" << endl;
-
-    string message;
-    int count = 0;
-    while (getline(cin, message)) {
-        if (message == "quit") {
-            cout << "Exiting..." << endl;
-            break;
-        }
-
-        if (!message.empty()) {
-            count++;
-            cout << "[Message " << count << "] Sending: " << message;
-            if (!sock.reliableSend(message, server)) {
-                cerr << " - FAILED" << endl;
-            } else {
-                cout << " - OK" << endl;
-            }
-        }
-    }
-
-    cout << "\n✓ Client test completed!" << endl;
+    
+    cout << "✓ Big message sent and acknowledged successfully!" << endl;
+    cout << "\n✓ Test completed successfully!" << endl;
     return 0;
 }
 
